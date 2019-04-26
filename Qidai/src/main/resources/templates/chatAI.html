@@ -1,0 +1,98 @@
+<!DOCTYPE HTML >
+<html>
+<head>
+	<title>研发专用聊天工具</title>
+	<meta name="description" contnent="The page is used to login!">
+	<meta http-equiv="Content-Type" content="text/html">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../static/css/login_css.css">	
+	<script type="text/javascript" src="../static/js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="../static//js/js/login.js"></script>
+
+</head>
+<body>
+
+  <!--Begin Chat-->
+   <!-- 聊天界面 -->
+<div class="Main">   
+   <div id="Mainchat">
+   
+  	 <!-- 聊天窗口 -->
+  	 <div id="chatArea" class="boxchat">
+     <div class="box_hd">
+       <div class="title_wrap">
+         <div class="title_body">
+           <a class="Down_img">
+            	 小期待
+           </a>
+         </div>
+       </div>
+     </div>
+     <div id="chat_content" class="chat_content">
+     	<div class="left">
+     		<a>你好，我是小期待！我最擅长夸人，快来让我夸夸你!</a>
+     	</div>        
+     </div>
+     <div class="box_ft">
+       <div class="ft_toolbar">
+         <a href="#" class="face"></a>
+         <div class="checkchat"><span>聊天记录</span></div>
+       </div>
+       <div class="ft_content">
+         <div class="conten_area">
+           <textarea id="send-frame"></textarea>
+         </div>
+       </div>
+       <div class="action">
+         <input class="btn_send" type="button" value="发送" onclick="getChat()"></input>
+       </div>
+     </div>
+     <div class="faces_box">
+       <div class="faces_content">
+       <div class="faces_title">
+         <ul>
+           <li class="facesT_name">常用表情</li>        
+         </ul>
+       </div>
+       <div class="faces_main">
+         <ul></ul>
+       </div>
+     </div>
+     </div>
+  </div>
+  <!-- 聊天记录 -->
+<div class="history">
+     <div class="box_hd">
+       <div class="title_wrap">
+         <div class="title_body">
+           <a href="#" class="title_name">聊天记录</a>
+            <div style="left: 650px;top: 15px;position: absolute;"><img  class="close" src="../static/image/close_02.png"></div>
+         </div>
+       </div>
+     </div>
+     <div class="history_main">
+     </div>
+</div>
+</div>
+</div>
+
+  <!--End Chat-->
+</body>
+<script type="text/javascript"> 
+function getChat(){	
+	var content = document.getElementById("send-frame").value;
+	$('#send-frame').val("");
+	$('#chat_content').append("<br><a style='color:green'>"+content+"</a>");
+	
+	$.ajax({		
+		type:"post",
+		url:"/chat/chatAI.do",
+		data:{"content":content},
+		dataType:"text", 
+		success:function(data){
+			$('#chat_content').append("<br><a>"+data.trim()+"</a>");
+		}
+		});
+}
+</script>
+</html>

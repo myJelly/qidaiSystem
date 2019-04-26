@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" type="text/css" href="../static/css/chat.css">
+<script type="text/javascript" src="../static/js/jquery-3.3.1.min.js"></script>
+<title>人工智能·小期待</title>
+</head>
+<body>
+<div class="chat_main">
+	<div class="chat_name">
+		<a>小期待</a>
+  	</div>
+  	<div class="chat_content" id="chat_content">
+  		<div class="sender" id="sender" style="display: none">
+  			<div>
+          		<img src="../static/image/xiaoqidai.jpg">
+      		</div>
+      		<div>
+      			<div class="left_triangle"></div>
+      				<span style="word-wrap:break-word; white-space:normal;"> 你好，我是小期待！</span>
+   			</div>
+  		</div>
+  				
+	</div>
+	<div class="chat_input">
+		<textarea class="send-frame" id="send-frame" onclick="changeColor()" onblur="returnColor()"></textarea>
+	</div>
+	<div class="chat_bottom">
+		<button class="chat_button" onclick="getChat()">发送(S)</button>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+//延迟加载第一句话
+window.setTimeout(fistWord,800);
+function fistWord(){
+	$(".sender").css("display","");
+}
+//解决回车换行
+document.onkeydown = function(){
+	var e = window.event || arguments[0];
+	if(e.keyCode == 13){
+		getChat();
+		document.getElementById("send-frame").focus();
+		e.returnValue = false;
+		return false;
+	}
+}
+
+function changeColor(){
+	$(".chat_input").css("background-color","white");
+	$("#send-frame").css("background-color","white");
+	$(".chat_bottom").css("background-color","white");
+}
+function returnColor(){
+	$(".chat_input").css("background-color","#eee");
+	$("#send-frame").css("background-color","#eee");
+	$(".chat_bottom").css("background-color","#eee");
+}
+function getChat(){	
+	var content = document.getElementById("send-frame").value;
+	$('#send-frame').val("");
+	$('#chat_content').append("<div class='receiver'>"+
+		"<div>"+
+        	"<img src='../static/image/cat.jpg'>"+
+        "</div>"+
+      	"<div>"+
+      		"<div class='right_triangle'></div>"+
+      		"<span style='word-wrap:break-word; white-space:normal'> "+content+" </span>"+
+      	"</div>"+
+  	"</div>");
+	var div = document.getElementById('chat_content');
+	div.scrollTop = div.scrollHeight;
+	$.ajax({		
+		type:"post",
+		url:"/chat/chatAI.do",
+		data:{"content":content},
+		dataType:"text", 
+		success:function(data){
+			$('#chat_content').append("<div class='sender'>"+
+		  	  	"<div>"+
+      				"<img src='../static/image/xiaoqidai.jpg'>"+
+  				"</div>"+
+  				"<div>"+
+  					"<div class='left_triangle'></div>"+
+  					"<span style='word-wrap:break-word; white-space:normal'> "+data.trim()+" </span>"+
+  				"</div>"+
+  			 "<div>");
+			div.scrollTop = div.scrollHeight;
+		}
+		});
+}
+</script>
+</html>

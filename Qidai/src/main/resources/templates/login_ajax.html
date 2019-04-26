@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+<body>
+<table align="center">
+<tr>
+<td>
+用户名<input id = "name" type="text" name="name" />
+</td>
+<td>
+密码<input id="password" type="password" name="password"/>
+</td>
+ 
+<td>
+<input id="button1" type="button" value="ajax登录" onclick="testGetUserShow()"></input>
+</td>
+ 
+</tr>
+</table>
+<div style="margin: 0 0 0 650px;"><a id="error" style="color:red"></a></div>
+<a href="/templates/register.html">免费注册</a>
+</body>
+<script src="../static/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript"> 
+function testGetUserShow(){
+	var name = document.getElementById("name").value;
+	var password = document.getElementById("password").value;
+	if(name==""||password==""){
+		document.getElementById("error").innerHTML="账号或密码不能为空";
+	}else{
+		$.ajax({
+			type:"post",
+			url:"/qidai/user_ajax",
+			data:{"name":name,
+				  "password":password},
+			dataType:"text",
+			success:function(data){
+				if(data.trim()=="OK"){
+					 window.location.href = "/templates/wel.html";
+				}else{
+					document.getElementById("error").innerHTML="账号密码错误";
+				}
+			}
+			});
+	}
+}
+</script>
+</html>
+
+
